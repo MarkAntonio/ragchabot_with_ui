@@ -1,9 +1,12 @@
 import streamlit as st
 from time import sleep
-from chatbot_util import RAG, llm_response
+
+from chatbot_util.generation import RAG
+from chatbot_util.chabot import llm_response
 
 
-st.write("Faça uma pergunta sobre o manual do aluno")
+
+st.write("Faça uma pergunta sobre o Manual do Estudante")
 
 if 'messages' not in st.session_state:
     st.session_state.messages = {"manual_aluno": [], "other": []}
@@ -19,7 +22,8 @@ for message in st.session_state.messages['manual_aluno']:
         with st.expander("Ver fontes"):
             for doc in message['content']['source']:
                 st.write(doc['page_content'])
-                st.write(f"Página: {doc['page']}  |  Score: {doc['score']}")
+                st.write(f"Capítulo: {doc['Header 1']}")
+                st.write(f"Score: {doc['score']}")
                 st.write("***")
             
            
@@ -46,7 +50,10 @@ if prompt:
     context_dict = {"disconnected_error": True}
 
     while context_dict["disconnected_error"]:
-        context_dict = RAG(prompt,)
+        context_dict = RAG(
+            prompt,
+            filter={"source": "Manual Estudante [preprocessed V2.2]"}
+        )
         if not context_dict["disconnected_error"]:
             break
         else:
@@ -61,14 +68,16 @@ if prompt:
 
     st.chat_message('assistant').write_stream(stream_data(answer['text']))
     
-    
+    reference = ""
+
     with st.expander("Ver fontes"):
         source_docs = ""
         for doc in context_dict['raw_docs']:
             st.write(doc.page_content)
-            st.write(f"Página: {int(doc.metadata['page'])}  |  Score: {doc.metadata['score']}")
+            st.write(f"Capítulo: {doc.metadata['Header 1']}")
+            st.write(f"Score: {doc.metadata['score']}")
             st.write("***")
-    
+        
     st.session_state.messages['manual_aluno'].append({
         'role': 'assistant',
         'content': {
@@ -76,7 +85,7 @@ if prompt:
             'source': [
                 {
                     'page_content': doc.page_content,
-                    'page': int(doc.metadata['page']),
+                    'Header 1': doc.metadata['Header 1'],
                     'score': doc.metadata['score']
                 } for doc in context_dict['raw_docs']
             ]

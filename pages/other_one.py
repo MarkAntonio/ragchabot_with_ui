@@ -1,6 +1,6 @@
 import streamlit as st
 from time import sleep
-from chatbot_util import RAG, llm_response
+from chatbot_util.indexing import RAG, llm_response
 
 
 st.write("Faça uma pergunta sobre a qualquer coisa")
