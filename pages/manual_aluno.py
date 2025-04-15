@@ -2,8 +2,7 @@ import streamlit as st
 from time import sleep
 
 from chatbot_util.generation import RAG
-from chatbot_util.chabot import llm_response
-
+from chatbot_util.chabot import llm_response, clear_bot_history
 
 
 st.write("Faça uma pergunta sobre o Manual do Estudante")
@@ -25,8 +24,11 @@ for message in st.session_state.messages['manual_aluno']:
                 st.write(f"Capítulo: {doc['Header 1']}")
                 st.write(f"Score: {doc['score']}")
                 st.write("***")
-            
-           
+
+def clear_history():
+    st.session_state.messages["manual_aluno"] = []
+    clear_bot_history(1)
+    st.rerun()
         
 
 # constroi o template da entrada do prompt para mostrar os prompts

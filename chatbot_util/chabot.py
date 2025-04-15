@@ -64,6 +64,11 @@ def get_chain_with_message_history(chatbot_chain):
     return chain_with_message_history
 
 
+def clear_bot_history(session_id):
+    if session_id in store:
+        store[session_id] = ChatMessageHistory()
+    
+
 load_dotenv()
 
 
@@ -75,6 +80,16 @@ llm = ChatGroq(
     max_tokens=None,
     verbose=True,
 )
+
+
+def set_model(model_name):
+    llm.model_name = model_name
+    
+
+
+def set_temperature(temp):
+    llm.temperature = temp
+
 
 
 def llm_response(user_input, str_docs, session_id):
