@@ -32,6 +32,7 @@ if __name__ == "__main__":
 
         if st.button("Apagar Histórico", type="primary", icon=":material/delete:"):
             clear_history()
+        st.page_link("https://drive.google.com/file/d/11IZBFp3QkrNhNa9chBCfX6juFdSMkPis/view?usp=sharing", label="Documento original", icon=":material/open_in_new:")
 
 
     manual_aluno_page = st.Page("pages/manual_aluno.py", title="Create entry", icon=":material/add_circle:")

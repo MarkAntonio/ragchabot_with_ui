@@ -84,12 +84,10 @@ llm = ChatGroq(
 
 def set_model(model_name):
     llm.model_name = model_name
-    
 
 
 def set_temperature(temp):
     llm.temperature = temp
-
 
 
 def llm_response(user_input, str_docs, session_id):
